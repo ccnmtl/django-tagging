@@ -19,6 +19,9 @@ env:
     - DJANGO=4.0 DATABASE_ENGINE=sqlite
     - DJANGO=4.0 DATABASE_ENGINE=postgres
     - DJANGO=4.0 DATABASE_ENGINE=mysql
+    - DJANGO=5.0 DATABASE_ENGINE=sqlite
+    - DJANGO=5.0 DATABASE_ENGINE=postgres
+    - DJANGO=5.0 DATABASE_ENGINE=mysql
 
 install:
     - pip install -U setuptools zc.buildout
@@ -40,6 +43,3 @@ script:
     - ./bin/test-and-cover
 after_success:
     - ./bin/coveralls
-notifications:
-    irc:
-        - "irc.freenode.org#django-tagging"

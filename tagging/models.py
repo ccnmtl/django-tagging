@@ -93,6 +93,7 @@ class TagManager(models.Manager):
         if min_count is not None:
             counts = True
 
+        params = params or []
         model_table = qn(model._meta.db_table)
         model_pk = '%s.%s' % (model_table, qn(model._meta.pk.column))
         query = """

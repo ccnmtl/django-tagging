@@ -93,6 +93,7 @@ class TagManager(models.Manager):
         if min_count is not None:
             counts = True
 
+        params = params or []
         model_table = qn(model._meta.db_table)
         model_pk = '%s.%s' % (model_table, qn(model._meta.pk.column))
         query = """
@@ -177,10 +178,11 @@ class TagManager(models.Manager):
         Passing a value for ``min_count`` implies ``counts=True``.
         """
         compiler = queryset.query.get_compiler(using=queryset.db)
-        where, params = compiler.compile(queryset.query.where)
+        params = None
         extra_joins = ' '.join(compiler.get_from_clause()[0][1:])
 
-        if where:
+        if len(queryset.query.where):
+            where, params = compiler.compile(queryset.query.where)
             extra_criteria = 'AND %s' % where
         else:
             extra_criteria = ''

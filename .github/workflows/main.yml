@@ -1,0 +1,72 @@
+name: Python package
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:latest
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_DB: postgres
+          POSTGRES_PASSWORD: postgres
+        options: >-
+          --health-cmd="pg_isready -U postgres"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+      mysql:
+        image: mysql:latest
+        ports:
+          - 3306:3306
+        env:
+          MYSQL_ROOT_PASSWORD: root
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    strategy:
+      matrix:
+        python-version: [3.7, 3.8, 3.9]
+        django: ['1.11', '2.2', '3.0', '4.0', '5.0']
+        database-engine: ['sqlite', 'postgres', 'mysql']
+
+    steps:
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install dependencies
+      run: |
+        pip install -U setuptools zc.buildout
+        buildout versions:django=${{ matrix.django }}
+        if [ "${{ matrix.database-engine }}" = "postgres" ]; then
+          pip install psycopg2;
+          psql -c 'create database tagging;' -U postgres;
+        elif [ "${{ matrix.database-engine }}" = "mysql" ]; then
+          pip install mysqlclient;
+          mysql -e 'create database tagging CHARACTER SET utf8 COLLATE utf8_general_ci;';
+          mysql_tzinfo_to_sql /usr/share/zoneinfo | mysql -u root mysql;
+        fi
+
+    - name: Run flake8
+      run: ./bin/flake8 tagging
+
+    - name: Run tests
+      run: ./bin/test-and-cover
+
+    - name: Post coverage to Coveralls
+      if: success()
+      run: ./bin/coveralls

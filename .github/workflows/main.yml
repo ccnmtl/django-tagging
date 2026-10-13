@@ -67,7 +67,7 @@ jobs:
           psql -c 'create database tagging;' -U postgres;
         elif [ "${{ matrix.database-engine }}" = "mysql" ]; then
           pip install mysqlclient;
-          mysql -h 127.0.0.1 -P 3306 -e 'create database tagging CHARACTER SET utf8 COLLATE utf8_general_ci;';
+          mysql -h 127.0.0.1 -P 3306 -u root -e 'create database tagging CHARACTER SET utf8 COLLATE utf8_general_ci;';
           mysql_tzinfo_to_sql /usr/share/zoneinfo | mysql -h 127.0.0.1 -P 3306 -u root mysql;
         fi
 

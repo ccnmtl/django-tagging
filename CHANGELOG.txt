@@ -2,7 +2,7 @@
 Django Tagging Changelog
 ========================
 
-Version 0.6.0
+Version 0.6.0 (unreleased)
 ------------------------------
 
 * Update to current supported django versions.

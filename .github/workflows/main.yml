@@ -67,4 +67,4 @@ jobs:
       run: ./bin/flake8 tagging
 
     - name: Run tests
-      run: ./bin/test-and-cover
+      run: ./bin/test

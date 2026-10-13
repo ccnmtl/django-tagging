@@ -68,7 +68,3 @@ jobs:
 
     - name: Run tests
       run: ./bin/test-and-cover
-
-    - name: Post coverage to Coveralls
-      if: success()
-      run: ./bin/coveralls

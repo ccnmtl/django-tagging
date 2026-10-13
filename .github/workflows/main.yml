@@ -45,6 +45,9 @@ jobs:
         database-engine: ['sqlite', 'postgres', 'mysql']
 
     steps:
+    - name: Check out repository
+      uses: actions/checkout@v7
+
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v7
       with:

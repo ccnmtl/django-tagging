@@ -54,6 +54,11 @@ jobs:
         python-version: ${{ matrix.python-version }}
 
     - name: Install dependencies
+      env:
+        PGHOST: 127.0.0.1
+        PGUSER: postgres
+        PGPASSWORD: postgres
+        MYSQL_PWD: root
       run: |
         pip install -U setuptools zc.buildout
         buildout versions:django=${{ matrix.django }}

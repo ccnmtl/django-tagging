@@ -167,7 +167,8 @@ class TestNormalisedTagListInput(TestCase):
                 'be tag names, Tag objects or Tag ids.')
         except Exception as e:
             raise self.failureException(
-                'the wrong type of exception was raised: type [%s] value [%s]' %
+                'the wrong type of exception was raised:' +
+                'type [%s] value [%s]' %
                 (str(type(e)), str(e)))
         else:
             raise self.failureException(

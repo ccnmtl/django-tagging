@@ -40,8 +40,8 @@ jobs:
 
     strategy:
       matrix:
-        python-version: ['3.11', '3.12', '3.13', '3.14']
-        django: ['4.2', '5.2']
+        python-version: ['3.12', '3.13', '3.14']
+        django: ['5.2', '6.1']
         database-engine: ['sqlite', 'postgres', 'mysql']
 
     steps:
